@@ -1,4 +1,10 @@
-import { View, StyleSheet, Alert } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import { theme } from "@/theme";
 import { PlantlyImage } from "@/components/PlantlyImage";
 import { FormInput } from "@/components/FormInput";
@@ -7,8 +13,24 @@ import { useState } from "react";
 import { useRouter } from "expo-router";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { usePlantStore } from "@/store/plantsStore";
+import * as ImagePicker from "expo-image-picker";
 
 export default function NewScreen() {
+  const [image, setImage] = useState<string | undefined>(undefined);
+  const handleImagePress = async () => {
+    if (Platform.OS === "web") return;
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+    if (!result.canceled) {
+      setImage(result.assets?.[0]?.uri);
+    }
+  };
+
   return (
     <KeyboardAwareScrollView
       style={styles.container}
@@ -16,15 +38,19 @@ export default function NewScreen() {
       keyboardShouldPersistTaps="handled"
       extraScrollHeight={100}
     >
-      <View style={{ alignItems: "center" }}>
-        <PlantlyImage />
-      </View>
-      <PlantlyForm />
+      <TouchableOpacity
+        style={{ alignItems: "center", paddingBottom: theme.spacing.large }}
+        activeOpacity={0.8}
+        onPress={handleImagePress}
+      >
+        <PlantlyImage imageUri={image} />
+      </TouchableOpacity>
+      <PlantlyForm imageUri={image} />
     </KeyboardAwareScrollView>
   );
 }
 
-function PlantlyForm() {
+function PlantlyForm({ imageUri }: { imageUri?: string }) {
   const [name, setName] = useState("");
   const [days, setDays] = useState("");
   const addPlant = usePlantStore((state) => state.addPlant);
@@ -49,7 +75,7 @@ function PlantlyForm() {
       );
     }
 
-    addPlant(name, Number(days));
+    addPlant({ name, wateringFrequencyDays: Number(days), imageUri });
     setName("");
     setDays("");
     router.replace("/");
