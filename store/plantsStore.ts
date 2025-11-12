@@ -106,3 +106,7 @@ export const usePlantStore = create(
     }
   )
 );
+
+export const selectPlantById = (plantId: string) => (state: PlantsState) => {
+  return state.plants.find((plant) => plant.id === plantId);
+};
