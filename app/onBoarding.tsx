@@ -47,14 +47,16 @@ const styles = StyleSheet.create({
     fontSize: theme.fontSizes.large,
   },
   subtitle: {
-    fontSize: theme.fontSizes.medium,
+    fontSize: theme.fontSizes.large,
     color: theme.colors.white,
     textAlign: "center",
+    fontFamily: theme.fontFamily.caveat,
   },
   title: {
     fontSize: theme.fontSizes.xLarge,
     color: theme.colors.white,
     fontWeight: "bold",
     marginBottom: theme.spacing.medium,
+    fontFamily: theme.fontFamily.caveat,
   },
 });

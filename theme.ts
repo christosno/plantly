@@ -12,8 +12,8 @@ export const theme = {
   fontSizes: {
     small: 12,
     medium: 16,
-    large: 20,
-    xLarge: 24,
+    large: 24,
+    xLarge: 40,
   },
   fontWeights: {
     normal: "400",
@@ -28,5 +28,8 @@ export const theme = {
     medium: 12,
     large: 22,
     xLarge: 42,
+  },
+  fontFamily: {
+    caveat: "Caveat_400Regular",
   },
 };
